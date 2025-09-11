@@ -17,6 +17,7 @@
   paper: "us-letter",
   author-font-size: 20pt,
   font-size: 10pt,
+  lang: "en",
   body,
 ) = {
 
@@ -28,7 +29,7 @@
     // LaTeX style font
     font: font,
     size: font-size,
-    lang: "en",
+    lang: lang,
     // Disable ligatures so ATS systems do not get confused when parsing fonts.
     ligatures: false
   )

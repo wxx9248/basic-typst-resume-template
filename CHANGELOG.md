@@ -1,5 +1,9 @@
 # Basic Resume Changelog
 
+## [v0.2.9](hhttps://github.com/stuxf/basic-typst-resume-template/releases/tags/v0.2.9)
+
+Make `lang` parameter configurable
+
 ## [v0.2.8](hhttps://github.com/stuxf/basic-typst-resume-template/releases/tags/v0.2.8)
 
 Add `font-size` and `author-font-size` configuration options
