@@ -7,7 +7,8 @@
   pronouns: "",
   location: "",
   email: "",
-  github: "",
+  github-personal: "",
+  github-cmu: "",
   linkedin: "",
   phone: "",
   personal-site: "",
@@ -18,6 +19,9 @@
   author-font-size: 20pt,
   font-size: 10pt,
   lang: "en",
+  section-title-padding-top: 0pt,
+  section-title-padding-bottom: -10pt,
+  personal-info-padding-top: 0.25em,
   body,
 ) = {
 
@@ -46,7 +50,7 @@
 
   // Small caps for section titles
   show heading.where(level: 2): it => [
-    #pad(top: 0pt, bottom: -10pt, [#smallcaps(it.body)])
+    #pad(top: section-title-padding-top, bottom: section-title-padding-bottom, [#smallcaps(it.body)])
     #line(length: 100%, stroke: 1pt)
   ]
 
@@ -73,19 +77,25 @@
   [= #(author)]
 
   // Personal Info Helper
-  let contact-item(value, prefix: "", link-type: "") = {
-    if value != "" {
-      if link-type != "" {
-        link(link-type + value)[#(prefix + value)]
-      } else {
-        value
-      }
+  let contact-item(value, prefix: "", link-type: "", display: "") = {
+    if value == "" {
+      return
+    }
+
+    if link-type == "" {
+      return value
+    }
+
+    if display == "" {
+      link(link-type + value)[#(prefix + value)]
+    } else {
+      link(link-type + value)[#display]
     }
   }
 
   // Personal Info
   pad(
-    top: 0.25em,
+    top: personal-info-padding-top,
     align(personal-info-position)[
       #{
         let items = (
@@ -93,9 +103,10 @@
           contact-item(phone),
           contact-item(location),
           contact-item(email, link-type: "mailto:"),
-          contact-item(github, link-type: "https://"),
-          contact-item(linkedin, link-type: "https://"),
-          contact-item(personal-site, link-type: "https://"),
+          contact-item(github-personal, link-type: "https://", display: "Personal GitHub"),
+          contact-item(github-cmu, link-type: "https://", display: "CMU GitHub"),
+          contact-item(linkedin, link-type: "https://", display: "LinkedIn"),
+          contact-item(personal-site, link-type: "https://", display: "Portfolio"),
           contact-item(orcid, prefix: [#orcid-icon(color: rgb("#AECD54"))orcid.org/], link-type: "https://orcid.org/"),
         )
         items.filter(x => x != none).join("  |  ")
@@ -188,18 +199,25 @@
   name: "",
   url: "",
   dates: "",
+  display-url: true
 ) = {
+  let link-text = if display-url {
+    url
+  } else {
+    "Link"
+  }
+
   generic-one-by-two(
     left: {
       if role == "" {
-        [*#name* #if url != "" and dates != "" [ (#link("https://" + url)[#url])]]
+        [*#name* #if url != "" and dates != "" [(#link("https://" + url)[#link-text])]]
       } else {
-        [*#role*, #name #if url != "" and dates != ""  [ (#link("https://" + url)[#url])]]
+        [*#role*, #name #if url != "" and dates != "" [(#link("https://" + url)[#link-text])]]
       }
     },
     right: {
       if dates == "" and url != "" {
-        link("https://" + url)[#url]
+        link("https://" + url)[#link-text]
       } else {
         dates
       }
@@ -212,11 +230,18 @@
   issuer: "",
   url: "",
   date: "",
+  display-url: true
 ) = {
+  let link-text = if display-url {
+    url
+  } else {
+    "Link"
+  }
+
   [
     *#name*, #issuer
     #if url != "" {
-      [ (#link("https://" + url)[#url])]
+      [ (#link("https://" + url)[#link-text])]
     }
     #h(1fr) #date
   ]
